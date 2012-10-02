@@ -13,7 +13,7 @@ namespace AnalizHelperSystem
     public partial class Form2 : Form
     {
         static BackgroundWorker bgw = new BackgroundWorker();
-        DBwork dbworker = new DBwork(SqlConnectionParametrs.DataBaseName, SqlConnectionParametrs.DataBaseServiceName);
+        DBwork dbworker; // = new DBwork(SqlConnectionParametrs.DataBaseName, SqlConnectionParametrs.DataBaseServiceName);
 
         public Form2()
         {
@@ -29,17 +29,40 @@ namespace AnalizHelperSystem
         {
             //dbworker.Attatch_DataBase(SqlConnectionParametrs.DataBaseName, @"F:\TEMP\123\QUIM.mdf", @"F:\TEMP\123\QUIM_log.ldf"); //TEMP ATTATCHING!!!!!!!!!!!!!!!!!!!!!
 
+            DBwork dbw1 = new DBwork("QUIM", "");
+            DBwork dbw2 = new DBwork("QUIM", "SQLEXPRESS");
+            try
+            {
+                dbw1.ReadDataBaseToDataSet("master", "select * from spt_monitor");
+                SqlConnectionParametrs.DataBaseServiceName = "";
+            }
+            catch (Exception)
+            {
+                try
+                {
+                    dbw2.ReadDataBaseToDataSet("master", "select * from spt_monitor");
+                    SqlConnectionParametrs.DataBaseServiceName = "SQLEXPRESS";
+                }
+                catch (Exception)
+                {
+                    throw new Exception("Data base server 2005 not found.");
+                }
+            }
+
+            dbworker = new DBwork(SqlConnectionParametrs.DataBaseName, SqlConnectionParametrs.DataBaseServiceName);
+
+
             //attatching db
             dbworker.Attatch_DataBase(SqlConnectionParametrs.DataBaseName, Environment.CurrentDirectory + "\\QUIM.mdf", Environment.CurrentDirectory + "\\QUIM_log.ldf");
             //checking struck of db
-            dbworker.ReadDataBaseToDataSet(temp.name_db, "select * from factor");
-            dbworker.ReadDataBaseToDataSet(temp.name_db, "select * from criteria");
-            dbworker.ReadDataBaseToDataSet(temp.name_db, "select * from metric");
-            dbworker.ReadDataBaseToDataSet(temp.name_db, "select * from profile");
-            dbworker.ReadDataBaseToDataSet(temp.name_db, "select * from report");
-            dbworker.ReadDataBaseToDataSet(temp.name_db, "select * from profile_metric");
-            dbworker.ReadDataBaseToDataSet(temp.name_db, "select * from metrInRep");
-            dbworker.ReadDataBaseToDataSet(temp.name_db, "select * from Factor_Criteria");
+            dbworker.ReadDataBaseToDataSet(SqlConnectionParametrs.DataBaseName, "select * from factor");
+            dbworker.ReadDataBaseToDataSet(SqlConnectionParametrs.DataBaseName, "select * from criteria");
+            dbworker.ReadDataBaseToDataSet(SqlConnectionParametrs.DataBaseName, "select * from metric");
+            dbworker.ReadDataBaseToDataSet(SqlConnectionParametrs.DataBaseName, "select * from profile");
+            dbworker.ReadDataBaseToDataSet(SqlConnectionParametrs.DataBaseName, "select * from report");
+            dbworker.ReadDataBaseToDataSet(SqlConnectionParametrs.DataBaseName, "select * from profile_metric");
+            dbworker.ReadDataBaseToDataSet(SqlConnectionParametrs.DataBaseName, "select * from metrInRep");
+            dbworker.ReadDataBaseToDataSet(SqlConnectionParametrs.DataBaseName, "select * from Factor_Criteria");
             //collect garb. after temp selecting
             GC.Collect();
         }
@@ -73,7 +96,8 @@ namespace AnalizHelperSystem
 
         private void Form2_FormClosing(object sender, FormClosingEventArgs e)
         {
-            dbworker.Detatch_DataBase(SqlConnectionParametrs.DataBaseName);
+            if (dbworker != null)
+                dbworker.Detatch_DataBase(SqlConnectionParametrs.DataBaseName);
             //collect garb. after temp selecting
             GC.Collect();
             Application.Exit();

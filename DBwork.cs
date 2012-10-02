@@ -39,7 +39,7 @@ namespace AnalizHelperSystem
         /// <param name="file_ldf"></param>
         public void Attatch_DataBase(string sql_name, string file_mdf, string file_ldf)
         {
-            string connection_string = @"Data Source=;Initial Catalog=master;Integrated Security=True";
+            string connection_string = @"Data Source=" + (g_serverName != "" ? Environment.MachineName + "\\" + g_serverName : "") + ";Initial Catalog=master;Integrated Security=True";
             try
             {
                 using (SqlConnection conn = new SqlConnection(connection_string))
@@ -67,7 +67,7 @@ namespace AnalizHelperSystem
         /// <param name="file_ldf"></param>
         public void Detatch_DataBase(string sql_name)
         {
-            string connection_string = @"Data Source=;Initial Catalog=master;Integrated Security=True";
+            string connection_string = @"Data Source=" + (g_serverName != "" ? Environment.MachineName + "\\" + g_serverName : "") + ";Initial Catalog=master;Integrated Security=True";
             try
             {
                 using (SqlConnection conn = new SqlConnection(connection_string))
@@ -100,7 +100,10 @@ namespace AnalizHelperSystem
             SqlDataAdapter _sqlDataAdapter = new SqlDataAdapter();       //
             DataSet _dataSet = new DataSet();                            //4 outputung in2 gridview
             SqlConnectionStringBuilder connectionStringBuilder1 = new SqlConnectionStringBuilder();
-            connectionStringBuilder1.DataSource = Environment.MachineName + g_serverName;
+            if (g_serverName == "")
+                connectionStringBuilder1.DataSource = Environment.MachineName;
+            else
+                connectionStringBuilder1.DataSource = Environment.MachineName + "\\" + g_serverName;
             //connectionStringBuilder1.DataSource = Environment.MachineName; // +"\\MSSQLSERVER";
             connectionStringBuilder1.IntegratedSecurity = true;
             connectionStringBuilder1.InitialCatalog = _dataBaseName;
@@ -129,7 +132,10 @@ namespace AnalizHelperSystem
             int _rowsAffected = 0;
             SqlConnection _sqlConnection = new SqlConnection();          //Connector 2 db
             SqlConnectionStringBuilder connectionStringBuilder1 = new SqlConnectionStringBuilder();
-            connectionStringBuilder1.DataSource = Environment.MachineName + g_serverName;
+            if (g_serverName == "")
+                connectionStringBuilder1.DataSource = Environment.MachineName;
+            else
+                connectionStringBuilder1.DataSource = Environment.MachineName + "\\" + g_serverName;
             connectionStringBuilder1.IntegratedSecurity = true;
             connectionStringBuilder1.InitialCatalog = _dataBaseName;
             _sqlConnection.ConnectionString = connectionStringBuilder1.ConnectionString;
@@ -158,7 +164,10 @@ namespace AnalizHelperSystem
             SqlDataAdapter _sqlDataAdapter = new SqlDataAdapter();
             SqlConnection _sqlConnection = new SqlConnection();          //Connector 2 db
             SqlConnectionStringBuilder connectionStringBuilder1 = new SqlConnectionStringBuilder();
-            connectionStringBuilder1.DataSource = Environment.MachineName;
+            if (g_serverName == "")
+                connectionStringBuilder1.DataSource = Environment.MachineName;
+            else
+                connectionStringBuilder1.DataSource = Environment.MachineName + "\\" + g_serverName;
             connectionStringBuilder1.IntegratedSecurity = true;
             connectionStringBuilder1.InitialCatalog = _dataBaseName;
             _sqlConnection.ConnectionString = connectionStringBuilder1.ConnectionString;

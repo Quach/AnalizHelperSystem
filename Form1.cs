@@ -618,7 +618,7 @@ namespace AnalizHelperSystem
                     if (dataSet21 != null)
                         adapter.Update(dataSet21);
                 }
-                catch (Exception ee)
+                catch (Exception)
                 {
                     dataSet21 = null;
                 }
@@ -638,7 +638,7 @@ namespace AnalizHelperSystem
                 dataGridView8.Columns[2].HeaderText = "TYPE:";
                 dataGridView8.Columns[3].Visible = false;
                 dataGridView8.Columns[3].ReadOnly = true;
-                adapter = dbw1.fillDataAdapter(temp.name_db, "select mr.Curvalue, mr.Type, mr.id_metrInrep from MetrInRep mr where mr.id_rep in (select r.id_rep from report r where r.progName like '" + listView2.Items[listView2.SelectedIndices[0]].Text + "')");
+                adapter = dbw1.fillDataAdapter(SqlConnectionParametrs.DataBaseName, "select mr.Curvalue, mr.Type, mr.id_metrInrep from MetrInRep mr where mr.id_rep in (select r.id_rep from report r where r.progName like '" + listView2.Items[listView2.SelectedIndices[0]].Text + "')");
                 cmdBuilder = new SqlCommandBuilder(adapter);
                 dataGridView8_Resize(dataGridView8, null);
                 UseWaitCursor = false;

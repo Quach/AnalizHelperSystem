@@ -60,7 +60,7 @@ namespace AnalizHelperSystem
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            dataSet1 = dbw1.ReadDataBaseToDataSet(temp.name_db, "select m.name_met from metric m, profile p, profile_metric pm where p.id_prof = pm.id_prof and m.id_met = pm.id_met and p.name_prof like '" + comboBox1.GetItemText(comboBox1.Items[comboBox1.SelectedIndex]) + "'");
+            dataSet1 = dbw1.ReadDataBaseToDataSet(SqlConnectionParametrs.DataBaseName, "select m.name_met from metric m, profile p, profile_metric pm where p.id_prof = pm.id_prof and m.id_met = pm.id_met and p.name_prof like '" + comboBox1.GetItemText(comboBox1.Items[comboBox1.SelectedIndex]) + "'");
             foreach (int checkedItemIndex in checkedListBox1.CheckedIndices)
             {
                 checkedListBox1.SetItemChecked(checkedItemIndex, false);
@@ -90,7 +90,7 @@ namespace AnalizHelperSystem
             dbw1.ChangeDataInDataBase("QUIM", "insert into report (progName, PercOfEnd, CreationD_rep) values('" + textBox1.Text + "', 0.0, 2342645)");
             for (int i = 0; i < checkedListBox1.CheckedItems.Count; i++)
             {
-                dbw1.ChangeDataInDataBase(temp.name_db, "insert into MetrInRep (id_rep, id_met) select (select id_rep from report where ProgName like '" + textBox1.Text + "'), (select id_met from metric where name_met like '" + checkedListBox1.CheckedItems[i].ToString() + "')");
+                dbw1.ChangeDataInDataBase(SqlConnectionParametrs.DataBaseName, "insert into MetrInRep (id_rep, id_met) select (select id_rep from report where ProgName like '" + textBox1.Text + "'), (select id_met from metric where name_met like '" + checkedListBox1.CheckedItems[i].ToString() + "')");
             }
             //dbw1.ReadDataBaseToDataSet(temp.name_db, "select * from factor, criteria, metric, profile, report");
         }

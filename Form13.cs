@@ -11,7 +11,7 @@ namespace AnalizHelperSystem
 {
     public partial class Form13 : Form
     {
-        DBwork dbw1 = new DBwork("QUIM", "");
+        DBwork dbw1 = new DBwork(SqlConnectionParametrs.DataBaseName, SqlConnectionParametrs.DataBaseServiceName);
         DataSet dataSet1;
         DataSet dataSet2;
         int lastSelect = -1;

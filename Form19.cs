@@ -9,13 +9,9 @@ using System.Windows.Forms;
 
 namespace AnalizHelperSystem
 {
-    public struct temp
-    {
-        public static string name_db = "QUIM";
-    }
     public partial class Form19 : Form
     {
-        DBwork dbw1 = new DBwork(temp.name_db, "");
+        DBwork dbw1 = new DBwork(SqlConnectionParametrs.DataBaseName, SqlConnectionParametrs.DataBaseServiceName);
         DataSet dataSet1;
         public Form19()
         {
